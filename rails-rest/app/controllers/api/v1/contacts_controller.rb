@@ -23,13 +23,13 @@ module Api
 
       def destroy
         contact = Contact.find(params[:id])
-        Contact.destroy
+        contact.destroy
         render json: {status: 'SUCCESS', message:'Deleted contact', data: contact},status: :ok
       end
 
       def update
         contact = Contact.find(params[:id])
-        if Contact.update_attributes(contact_params)
+        if contact.update_attributes(contact_params)
           render json: {status: 'SUCCESS', message:'Updated contact', data: contact},status: :ok
         else
           render json: {status: 'ERROR', message:'Contact not updated', data: Contact.errors},status: :unprocessable_entity

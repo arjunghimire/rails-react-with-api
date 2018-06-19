@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import { onPostSubmit} from '../actions/contactActions';
+import { onPostSubmit} from '../actions/contactActions';
 import {connect} from 'react-redux';
 
 import {Grid, Container, Button, Checkbox, Form } from 'semantic-ui-react'
@@ -24,7 +24,7 @@ class ContactForm extends Component {
       fullname : this.state.fullname,
       phone: this.state.phone
     }
-   // this.props.onPostSubmit(contact);
+    this.props.onPostSubmit(contact);
     this.setState({fullname: "",phone: ""});
   }
   render() {
@@ -66,4 +66,4 @@ class ContactForm extends Component {
   }
 }
 
-export default connect(null)(ContactForm)
+export default connect(null,{ onPostSubmit })(ContactForm)
