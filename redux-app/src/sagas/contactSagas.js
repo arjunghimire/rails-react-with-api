@@ -13,7 +13,9 @@ import {
 	FETCH_CONTACT_REQUEST,
 	FETCH_CONTACT_SUCCESS,
 	FETCH_CONTACT_FAILED,
-	DELETE_CONTACT_REQUEST
+	DELETE_CONTACT_REQUEST,
+	EDIT_CONTACT_REQUEST,
+	FETCH_CONTACT_EDIT
 } from '../actions/types';
 
 function getContactsJson(){
@@ -30,6 +32,9 @@ function onDeleteContactJson(id){
 	return axios.delete('http://127.0.0.1:3001/api/v1/contacts/' + id)
 }
 
+function onEditContactJson(id){
+	return axios.get('http://127.0.0.1:3001/api/v1/contacts/' + id)
+}
 
 export function* contactRequest() {
 	yield takeEvery(FETCH_CONTACT_REQUEST, function*(data) {
@@ -88,13 +93,32 @@ export function* onDeleteContactSaga(){
 	  });
 }
 
+export function* onEditContactSaga(){
+	yield takeEvery(EDIT_CONTACT_REQUEST, function*(data) {
+		try{
+		   const response = yield call(onEditContactJson,data.id)
+		  const  contact  = response.data.data;
+		  yield put({
+			type: FETCH_CONTACT_EDIT,
+			contact
+		  });
+		} catch(error) {
+		  // yield put({
+		  //   type: actions.LOGIN_ERROR,
+		  //   error
+		  // });
+		}
+	  });
+}
+
 
   
   export default function* contactWatcherSaga() {
 	yield all([
 	  fork(onPostContactSaga),
 	  fork(contactRequest),
-	  fork(onDeleteContactSaga)
+	  fork(onDeleteContactSaga),
+	  fork(onEditContactSaga)
 	]);
   }
   

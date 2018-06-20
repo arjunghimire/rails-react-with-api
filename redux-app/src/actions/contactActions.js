@@ -1,7 +1,8 @@
 import {
   CREATE_CONTACT_REQUEST,
   FETCH_CONTACT_REQUEST,
-  DELETE_CONTACT_REQUEST
+  DELETE_CONTACT_REQUEST,
+  EDIT_CONTACT_REQUEST
 } from './types';
 
 
@@ -23,6 +24,13 @@ export function onDeleteContact(id){
     type: DELETE_CONTACT_REQUEST,
     id
   }
+}
+
+export function onEditContact(id){
+   return{
+    type: EDIT_CONTACT_REQUEST,
+    id
+  } 
 }
 // function onPost(contact){
 //   return fetch('http://127.0.0.1:3001/api/v1/contacts/', {

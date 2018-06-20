@@ -14,6 +14,14 @@ class ContactForm extends Component {
       }
   }
 
+ 
+  componentDidMount(){
+    console.log("Component Did mount")
+  }
+
+  componentDidUpdate (){
+    console.log("ComponentDidUpdate")
+  }
 
   onChangeHandler = (key,event) => {
     this.setState({[key]: event.target.value})
@@ -66,4 +74,5 @@ class ContactForm extends Component {
   }
 }
 
-export default connect(null,{ onPostSubmit })(ContactForm)
+
+export default connect(null,{ onPostSubmit})(ContactForm)
