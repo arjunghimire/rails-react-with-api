@@ -4,15 +4,20 @@ import actions from '../actions/contactActions';
 import { Divider, Segment } from 'semantic-ui-react'
 import {  Link } from 'react-router-dom'
 
-const { fetchContactRequest,onDeleteContact } = actions;
+const { fetchContactRequest,onDeleteContact,onEditContact } = actions;
 class ContactList extends Component {
+
   componentDidMount() {
     this.props.fetchContactRequest();
   }
   onDeleteHandle = id => {
     this.props.onDeleteContact(id);
 	}
+  onEditHandle = id => {
+    this.props.onEditContact(id);
+  }
   render() {
+    console.log("Props",this.props.contact)
     return (
         <div>
           {
@@ -33,8 +38,8 @@ class ContactList extends Component {
 }
 
 const mapStateToProps = state => {
-    return  state.contacts
+    return state.contacts
 }
 
 
-export default connect(mapStateToProps,{ fetchContactRequest,onDeleteContact })(ContactList);
+export default connect(mapStateToProps,{ fetchContactRequest,onDeleteContact,onEditContact })(ContactList);
