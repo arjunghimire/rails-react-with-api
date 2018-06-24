@@ -91,14 +91,13 @@ export function* onUpdateContactSaga(){
 		   yield call(onUpdateContactJson,contact)
 		   const response = yield call(getContactsJson);
 			 const  contacts  = response.data.data;
-			 console.log("Saga",contacts )
 		  yield put({
 				type: actions.FETCH_CONTACT_SUCCESS,
 				contacts
 			});
 			yield call(resolve);
 		} catch(error) {
-		//	yield call(reject)
+			yield call(reject)
 		  // yield put({
 		  //   type: actions.LOGIN_ERROR,
 		  //   error

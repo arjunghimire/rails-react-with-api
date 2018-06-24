@@ -17,7 +17,6 @@ class ContactList extends Component {
     this.props.onEditContact(id);
   }
   render() {
-    console.log("Props",this.props.contact)
     return (
         <div>
           {

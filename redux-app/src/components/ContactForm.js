@@ -40,6 +40,8 @@ class ContactForm extends Component {
         this.setState({isEditable: false});
         this.props.history.push('/');
         this.onClearState();
+      }).catch((error) =>{
+        console.log(error)
       })
     }else{
       this.props.onContactSubmit(contact);
