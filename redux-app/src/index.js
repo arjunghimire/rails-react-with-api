@@ -7,11 +7,10 @@ import registerServiceWorker from './registerServiceWorker';
 import 'semantic-ui-css/semantic.min.css';
 import { composeWithDevTools} from 'redux-devtools-extension';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga  from './sagas/rootSaga';
-
+import { BrowserRouter} from 'react-router-dom'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -27,9 +26,11 @@ sagaMiddleware.run(rootSaga);
 
 
 ReactDOM.render(
- <Provider store={store}>
-  <App />
- </Provider>,
+ <BrowserRouter>
+  <Provider store={store}>
+    <App />
+  </Provider>
+ </BrowserRouter>,
  document.getElementById('root')
 );
 registerServiceWorker();

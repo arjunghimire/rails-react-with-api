@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { onPostSubmit} from '../actions/contactActions';
+import actions from '../actions/contactActions';
 import {connect} from 'react-redux';
+import {Grid, Container, Button,  Form } from 'semantic-ui-react'
 
-import {Grid, Container, Button, Checkbox, Form } from 'semantic-ui-react'
-
-
+const  { onContactSubmit,fetchContactRequest,onUpdateContact} = actions;
 class ContactForm extends Component {
   constructor(props){
       super(props);
@@ -14,6 +13,15 @@ class ContactForm extends Component {
       }
   }
 
+  componentDidMount () {
+    this.props.fetchContactRequest();
+  }
+  onClearState = () => {
+    this.setState({
+      fullname: "",
+      phone: ""
+    })
+  }
 
   onChangeHandler = (key,event) => {
     this.setState({[key]: event.target.value})
@@ -21,12 +29,37 @@ class ContactForm extends Component {
   onSubmitHandler = e => {
     e.preventDefault();
     const contact = {
+      id: this.props.match.params.id,
       fullname : this.state.fullname,
       phone: this.state.phone
     }
-    this.props.onPostSubmit(contact);
-    this.setState({fullname: "",phone: ""});
+    if(this.state.isEditable){
+      return new Promise((resolve, reject) => {
+        this.props.onUpdateContact({contact,resolve,reject});
+      }).then((resolve) => {
+        this.setState({isEditable: false});
+        this.props.history.push('/');
+        this.onClearState();
+      })
+    }else{
+      this.props.onContactSubmit(contact);
+      this.onClearState();
+    }
+
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps !== this.state){
+      const params = nextProps.match.params.id;
+      nextProps.contacts.map((con) => {
+          if(con.id == params){
+            this.setState({fullname: con.fullname})
+            this.setState({phone: con.phone})
+            this.setState({isEditable: true})
+          }
+      });
+    }  
+  }
+
   render() {
     const style = {
       marginTop: "10px",
@@ -56,7 +89,7 @@ class ContactForm extends Component {
            primary
            type='submit'
            onClick={this.onSubmitHandler}
-           >Submit</Button>
+           >{ this.state.isEditable ? "Edit": "Add" }</Button>
         </Form>
         </Grid.Column>
       </Grid.Row>
@@ -65,5 +98,9 @@ class ContactForm extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return  state.contacts
+}
 
-export default connect(null,{ onPostSubmit })(ContactForm)
+
+export default connect(mapStateToProps,{ onContactSubmit,fetchContactRequest,onUpdateContact })(ContactForm)

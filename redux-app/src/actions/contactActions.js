@@ -1,53 +1,28 @@
-import {
-  CREATE_CONTACT_REQUEST,
-  FETCH_CONTACT_REQUEST,
-  DELETE_CONTACT_REQUEST
-} from './types';
-
-
-
-
-export const fetchContactRequest = () => ({
-  type: FETCH_CONTACT_REQUEST
-})
-
-export function onPostSubmit(contact) {
-  return {
-    type: CREATE_CONTACT_REQUEST,
+const actions = {
+  FETCH_CONTACT_REQUEST: 'FETCH_CONTACT_REQUEST',
+  FETCH_CONTACT_SUCCESS: 'FETCH_CONTACT_SUCCESS',
+  FETCH_CONTACT_FAILED: 'FETCH_CONTACT_FAILED',
+  CREATE_CONTACT_REQUEST: 'CREATE_CONTACT_REQUEST',
+  DELETE_CONTACT_REQUEST: 'DELETE_CONTACT_REQUEST',
+  UPDATE_CONTACT_REQUEST: 'UPDATE_CONTACT_REQUEST',
+  fetchContactRequest: () => ({
+    type: actions.FETCH_CONTACT_REQUEST
+  }),
+  onContactSubmit: contact => ({
+    type: actions.CREATE_CONTACT_REQUEST,
     contact
-  }
-}
-
-export function onDeleteContact(id){
-  return{
-    type: DELETE_CONTACT_REQUEST,
+  }),
+  onDeleteContact: id => ({
+    type: actions.DELETE_CONTACT_REQUEST,
     id
-  }
+  }),
+  onUpdateContact : ({contact,resolve,reject}) => ({
+    type: actions.UPDATE_CONTACT_REQUEST,
+    contact,
+    resolve,
+    reject
+  })
 }
-// function onPost(contact){
-//   return fetch('http://127.0.0.1:3001/api/v1/contacts/', {
-//       method: 'POST',
-//       headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(contact)
-//     });
-// }
 
 
-// function  receiveContact(json){
-//     return {
-//         type: FETCH_CONTACT,
-//         contacts: json
-//     }
-// }
-
-
-
-// export function fetchContact(){
-//     return function(dispatch) {
-//         return getContactsJson()
-//         .then(json => dispatch(receiveContact(json)))
-//     }
-// }
+export default actions;

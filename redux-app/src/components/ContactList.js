@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
-import { fetchContactRequest,onDeleteContact } from '../actions/contactActions';
+import actions from '../actions/contactActions';
 import { Divider, Segment } from 'semantic-ui-react'
+import {  Link } from 'react-router-dom'
 
+const { fetchContactRequest,onDeleteContact } = actions;
 class ContactList extends Component {
   componentDidMount() {
     this.props.fetchContactRequest();
@@ -19,13 +21,12 @@ class ContactList extends Component {
                 <Segment key={index}>
                   { contact.fullname} => 	{contact.phone}
                 <Divider section />
-                  <button className="ui blue button">Edit</button>  
+                  <Link to={`${contact.id}`}><button className="ui blue button">Edit</button></Link> 
                   <button onClick={this.onDeleteHandle.bind(this,contact.id)} className="ui red button">Delete</button>
               </Segment>
               );
             })
           }
-
         </div>
     );
   }
