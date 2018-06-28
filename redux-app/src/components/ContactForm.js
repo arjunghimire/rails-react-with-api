@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import actions from '../actions/contactActions';
 import {connect} from 'react-redux';
 import {Grid, Container, Button,  Form } from 'semantic-ui-react'
+import {  notification } from 'antd';
 
 const  { onContactSubmit,fetchContactRequest,onUpdateContact} = actions;
 class ContactForm extends Component {
@@ -14,7 +15,9 @@ class ContactForm extends Component {
   }
 
   componentDidMount () {
-    this.props.fetchContactRequest();
+    return new Promise((resolve, reject) => {
+      this.props.fetchContactRequest({resolve,reject});
+    })
   }
   onClearState = () => {
     this.setState({
@@ -40,12 +43,27 @@ class ContactForm extends Component {
         this.setState({isEditable: false});
         this.props.history.push('/');
         this.onClearState();
-      }).catch((error) =>{
-        console.log(error)
+        notification["success"]({
+          message: resolve
+        });
+      }).catch(reject =>{
+        notification["error"]({
+          message: "reject"
+        });
       })
     }else{
-      this.props.onContactSubmit(contact);
-      this.onClearState();
+      return new Promise((resolve, reject) => {
+        this.props.onContactSubmit({contact,resolve,reject});
+      }).then(resolve => {
+        this.onClearState();
+        notification["success"]({
+          message: resolve
+        });
+      }).catch(reject =>{
+        notification["error"]({
+          message: "Reject"
+        });
+      })
     }
 
   }

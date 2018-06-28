@@ -11,6 +11,7 @@ import rootReducer from './reducers/rootReducer';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga  from './sagas/rootSaga';
 import { BrowserRouter} from 'react-router-dom'
+import 'antd/dist/antd.css'; 
 
 const sagaMiddleware = createSagaMiddleware();
 

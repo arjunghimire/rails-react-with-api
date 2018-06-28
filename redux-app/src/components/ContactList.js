@@ -3,30 +3,41 @@ import {connect} from 'react-redux';
 import actions from '../actions/contactActions';
 import { Divider, Segment } from 'semantic-ui-react'
 import {  Link } from 'react-router-dom'
+import {  notification } from 'antd';
 
 const { fetchContactRequest,onDeleteContact,onEditContact } = actions;
 class ContactList extends Component {
 
   componentDidMount() {
-    this.props.fetchContactRequest();
+    return new Promise((resolve, reject) => {
+      this.props.fetchContactRequest({resolve,reject});
+    })
   }
-  onDeleteHandle = id => {
-    this.props.onDeleteContact(id);
-	}
-  onEditHandle = id => {
-    this.props.onEditContact(id);
+  onDeleteHandle = ({ contact}) =>{
+    const id = contact.id;
+    return new Promise((resolve, reject) => {
+      this.props.onDeleteContact({id,resolve,reject});
+    }).then((resolve) => {
+      notification["success"]({
+        message: resolve
+      });
+    })
+    .catch((error) => {
+      console.log("Response",error)
+    });
   }
+
   render() {
     return (
         <div>
           {
-            this.props.contacts.map((contact,index) => {
+            this.props.contacts.contacts.map((contact,index) => {
               return(
                 <Segment key={index}>
                   { contact.fullname} => 	{contact.phone}
                 <Divider section />
                   <Link to={`${contact.id}`}><button className="ui blue button">Edit</button></Link> 
-                  <button onClick={this.onDeleteHandle.bind(this,contact.id)} className="ui red button">Delete</button>
+                  <button onClick={ () => this.onDeleteHandle({ contact })} className="ui red button">Delete</button>
               </Segment>
               );
             })
@@ -37,7 +48,10 @@ class ContactList extends Component {
 }
 
 const mapStateToProps = state => {
-    return state.contacts
+    return{
+      contacts: state.contacts,
+      error: state.error
+    } 
 }
 
 

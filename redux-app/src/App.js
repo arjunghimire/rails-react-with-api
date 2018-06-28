@@ -3,7 +3,7 @@ import './App.css';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import {Grid, Container } from 'semantic-ui-react'
-import {Switch, Route } from 'react-router-dom'
+import {Switch,Link, Route } from 'react-router-dom'
 class App extends Component {
   render() {
     const style = {

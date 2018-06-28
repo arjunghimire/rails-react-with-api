@@ -6,20 +6,26 @@ const actions = {
   DELETE_CONTACT_REQUEST: 'DELETE_CONTACT_REQUEST',
   UPDATE_CONTACT_REQUEST: 'UPDATE_CONTACT_REQUEST',
   EDIT_CONTACT_REQUEST: 'EDIT_CONTACT_REQUEST',
-  fetchContactRequest: () => ({
-    type: actions.FETCH_CONTACT_REQUEST
+  fetchContactRequest: ({resolve,reject}) => ({
+    type: actions.FETCH_CONTACT_REQUEST,
+    resolve,
+    reject
   }),
-  onContactSubmit: contact => ({
+  onContactSubmit: ({contact,resolve,reject}) => ({
     type: actions.CREATE_CONTACT_REQUEST,
-    contact
+    contact,
+    resolve,
+    reject
   }),
   onEditContact: id => ({
     type: actions.EDIT_CONTACT_REQUEST,
     id
   }),
-  onDeleteContact: id => ({
+  onDeleteContact:({ id,resolve,reject}) => ({
     type: actions.DELETE_CONTACT_REQUEST,
-    id
+    id,
+    resolve,
+    reject
   }),
   onUpdateContact : ({contact,resolve,reject}) => ({
     type: actions.UPDATE_CONTACT_REQUEST,

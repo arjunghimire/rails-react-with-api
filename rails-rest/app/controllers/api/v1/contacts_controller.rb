@@ -1,6 +1,8 @@
 module Api
   module V1
     class ContactsController < ApplicationController
+     # before_action :authenticate_user!
+
       def index
         contacts = Contact.order('created_at DESC');
         render json: {status: 'SUCCESS', message:'Loaded contacts', data: contacts},status: :ok
@@ -13,11 +15,10 @@ module Api
 
       def create
         contact = Contact.new(contact_params)
-
         if contact.save
           render json: {status: 'SUCCESS', message:'Saved contact', data: contact },status: :ok
         else
-          render json: {status: 'ERROR', message:'Contact not saved', data: Contact.errors},status: :unprocessable_entity
+          render json: {status: 'ERROR', message:'Contact not saved', data: contact.errors},status: :unprocessable_entity
         end
       end
 
@@ -32,7 +33,7 @@ module Api
         if contact.update_attributes(contact_params)
           render json: {status: 'SUCCESS', message:'Updated contact', data: contact},status: :ok
         else
-          render json: {status: 'ERROR', message:'Contact not updated', data: Contact.errors},status: :unprocessable_entity
+          render json: {status: 'ERROR', message:'Contact not updated', data: contact.errors},status: :unprocessable_entity
         end
       end
 
