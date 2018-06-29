@@ -20,6 +20,24 @@ function update(id,contact){
 	return api.put(`contacts/${id}`,contact);
 }
 
+
+export function* onPostContactSaga(){
+	yield takeEvery(actions.CREATE_CONTACT_REQUEST, function*({contact,resolve,reject}) {
+			const responsePost = yield call(post,contact)
+			const response = yield call(get);
+			const  contacts  = response.data.data;
+			yield put({
+				type: actions.FETCH_CONTACT_SUCCESS,
+				contacts
+			});
+			if(responsePost.status == 200){
+				yield call(resolve,responsePost)
+			}else{
+				yield call(reject,responsePost)
+			}
+	  });
+}
+
 export function* contactRequest() {
 	yield takeEvery(actions.FETCH_CONTACT_REQUEST, function*({resolve,reject}) {
 	  try{
@@ -41,24 +59,6 @@ export function* contactRequest() {
 
 }
 
-export function* onPostContactSaga(){
-	yield takeEvery(actions.CREATE_CONTACT_REQUEST, function*({contact,resolve,reject}) {
-		try{
-			const responsePost = yield call(post,contact)
-			const response = yield call(get);
-			const  contacts  = response.data.data;
-			yield put({
-				type: actions.FETCH_CONTACT_SUCCESS,
-				contacts
-			});
-			yield call(resolve,responsePost.data.message);
-
-		} catch(error) {
-			console.log("Saga Error",error);
-		  //	yield call(reject,error)
-		}
-	  });
-}
 
 export function* onDeleteContactSaga(){
 	yield takeEvery(actions.DELETE_CONTACT_REQUEST, function*({id,resolve,reject}) {

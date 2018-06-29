@@ -48,7 +48,7 @@ class ContactForm extends Component {
         });
       }).catch(reject =>{
         notification["error"]({
-          message: "reject"
+          message: reject
         });
       })
     }else{
@@ -57,11 +57,11 @@ class ContactForm extends Component {
       }).then(resolve => {
         this.onClearState();
         notification["success"]({
-          message: resolve
+          message: resolve.data.message
         });
       }).catch(reject =>{
         notification["error"]({
-          message: "Reject"
+          message: reject
         });
       })
     }

@@ -1,6 +1,19 @@
 import axios from 'axios';
 
 export default class Api  {
+ 
+  handleError = error => {
+    switch (error.status) {
+      case 422:
+        return "422 error alert"
+      case 404:
+        return "404 error alert"
+      case 500: 
+        return "500 error"
+      default:
+        break;
+    }
+  }
 
   axiosFunction = () => {
     return axios.create({
@@ -15,7 +28,7 @@ export default class Api  {
     return this.axiosFunction().post(url,data).then(response => {
       return response;
     }).catch(error => {
-      return error.response;
+      return this.handleError(error.response)
     });;
   }
 
@@ -32,8 +45,3 @@ export default class Api  {
   }
 
 }
-
-
-
-
-  // withCredentials: true,
